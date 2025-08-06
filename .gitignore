@@ -1,0 +1,21 @@
+# Ignore Python cache and compiled files
+__pycache__/
+*.pyc
+
+# Ignore experiment outputs and logs
+*.log
+*.txt
+*.png
+
+# Ignore model weights and checkpoints
+*.pt
+*.ckpt
+
+# Ignore PBS script backups
+*.pbs.save*
+
+# Ignore specific folders
+exp/
+logs/
+runs/
+
