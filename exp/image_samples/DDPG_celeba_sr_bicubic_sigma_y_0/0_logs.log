@@ -1,0 +1,38 @@
+INFO - main.py - 2025-07-18 11:42:55,374 - Argument config: 'celeba_hq.yml'
+INFO - main.py - 2025-07-18 11:42:55,375 - Argument deg: 'sr_bicubic'
+INFO - main.py - 2025-07-18 11:42:55,375 - Argument deg_scale: 4.0
+INFO - main.py - 2025-07-18 11:42:55,376 - Argument eta_tilde: 0.7
+INFO - main.py - 2025-07-18 11:42:55,376 - Argument exp: 'exp'
+INFO - main.py - 2025-07-18 11:42:55,376 - Argument gamma: 8.0
+INFO - main.py - 2025-07-18 11:42:55,376 - Argument image_folder: 'exp/image_samples/DDPG_celeba_sr_bicubic_sigma_y_0'
+INFO - main.py - 2025-07-18 11:42:55,376 - Argument inject_noise: 1
+INFO - main.py - 2025-07-18 11:42:55,377 - Argument ni: True
+INFO - main.py - 2025-07-18 11:42:55,377 - Argument operator_imp: 'SVD'
+INFO - main.py - 2025-07-18 11:42:55,377 - Argument path_y: 'celeba_hq'
+INFO - main.py - 2025-07-18 11:42:55,377 - Argument save_observed_img: False
+INFO - main.py - 2025-07-18 11:42:55,377 - Argument scale_ls: 1.0
+INFO - main.py - 2025-07-18 11:42:55,377 - Argument seed: 1234
+INFO - main.py - 2025-07-18 11:42:55,378 - Argument sigma_y: 0.0
+INFO - main.py - 2025-07-18 11:42:55,378 - Argument step_size_mode: 0
+INFO - main.py - 2025-07-18 11:42:55,378 - Argument subset_end: -1
+INFO - main.py - 2025-07-18 11:42:55,378 - Argument subset_start: -1
+INFO - main.py - 2025-07-18 11:42:55,378 - Argument verbose: 'info'
+INFO - main.py - 2025-07-18 11:42:55,378 - Argument xi: 1e-05
+INFO - main.py - 2025-07-18 11:42:55,378 - Argument zeta: 0.7
+INFO - main.py - 2025-07-18 11:42:55,379 - Using device: cpu
+INFO - diffusion.py - 2025-07-18 11:43:53,320 - img_ind: 0, PSNR: 34.50, LPIPS: 0.0541
+INFO - diffusion.py - 2025-07-18 11:43:53,321 - Avg PSNR: 34.50, Avg LPIPS: 0.0541     (** After 1 iteration **)
+INFO - diffusion.py - 2025-07-18 11:44:43,769 - img_ind: 1, PSNR: 34.00, LPIPS: 0.0393
+INFO - diffusion.py - 2025-07-18 11:44:43,769 - Avg PSNR: 34.25, Avg LPIPS: 0.0467     (** After 2 iteration **)
+INFO - diffusion.py - 2025-07-18 11:45:33,479 - img_ind: 2, PSNR: 31.78, LPIPS: 0.0399
+INFO - diffusion.py - 2025-07-18 11:45:33,479 - Avg PSNR: 33.43, Avg LPIPS: 0.0444     (** After 3 iteration **)
+INFO - diffusion.py - 2025-07-18 11:46:25,417 - img_ind: 3, PSNR: 30.08, LPIPS: 0.0355
+INFO - diffusion.py - 2025-07-18 11:46:25,418 - Avg PSNR: 32.59, Avg LPIPS: 0.0422     (** After 4 iteration **)
+INFO - diffusion.py - 2025-07-18 11:47:15,016 - img_ind: 4, PSNR: 33.07, LPIPS: 0.0623
+INFO - diffusion.py - 2025-07-18 11:47:15,016 - Avg PSNR: 32.69, Avg LPIPS: 0.0462     (** After 5 iteration **)
+INFO - diffusion.py - 2025-07-18 11:48:07,621 - img_ind: 5, PSNR: 30.35, LPIPS: 0.0616
+INFO - diffusion.py - 2025-07-18 11:48:07,623 - Avg PSNR: 32.30, Avg LPIPS: 0.0488     (** After 6 iteration **)
+INFO - diffusion.py - 2025-07-18 11:48:57,750 - img_ind: 6, PSNR: 35.18, LPIPS: 0.0437
+INFO - diffusion.py - 2025-07-18 11:48:57,750 - Avg PSNR: 32.71, Avg LPIPS: 0.0481     (** After 7 iteration **)
+INFO - diffusion.py - 2025-07-18 11:49:47,051 - img_ind: 7, PSNR: 28.86, LPIPS: 0.0348
+INFO - diffusion.py - 2025-07-18 11:49:47,052 - Avg PSNR: 32.23, Avg LPIPS: 0.0464     (** After 8 iteration **)

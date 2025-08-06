@@ -5,6 +5,9 @@ import torchvision
 import os
 import numpy as np
 from datasets import inverse_data_transform, data_transform
+# --- Enhanced Guidance Modules ---
+import torch.nn.functional as F  # should already be imported
+# Your edge/frequency/adaptive modules come from config, no direct import here
 
 class_num = 951
 
@@ -40,20 +43,44 @@ def ddpg_diffusion(x, model, b, A_funcs, y, sigma_y, cls_fn=None, classes=None, 
                 next_t = (torch.ones(n) * j).to(x.device)
                 at = compute_alpha(b, t.long())
                 at_next = compute_alpha(b, next_t.long())
-                xt = xs[-1].to('cuda')
-                if cls_fn == None:
+                device = xs[-1].device
+                xt = xs[-1].to(device)
+
+                if cls_fn is None:
                     et = model(xt, t)
                 else:
-                    classes = torch.ones(xt.size(0), dtype=torch.long, device=torch.device("cuda"))*class_num
+                    classes = torch.ones(xt.size(0), dtype=torch.long, device=xt.device) * class_num
                     et = model(xt, t, classes)
                     et = et[:, :3]
                     et = et - (1 - at).sqrt()[0, 0, 0, 0] * cls_fn(x, t, classes)
-
+                
                 if et.size(1) == 6:
                     et = et[:, :3]
-
+                
                 # estimate x0
                 x0_t = (xt - et * (1 - at).sqrt()) / at.sqrt()
+                
+                # === Custom guidance logic ===
+                cfg = config
+                
+                # Edge guidance
+                if hasattr(cfg, "edge_guidance") and cfg.edge_guidance is not None:
+                    edge_map = cfg.edge_guidance(x0_t).mean(1, keepdim=True)
+                    x0_t = x0_t + 0.1 * edge_map
+                
+                # Frequency guidance
+                if hasattr(cfg, "freq_guidance") and cfg.freq_guidance is not None:
+                    freq_boost = cfg.freq_guidance(x0_t)
+                    x0_t = 0.8 * x0_t + 0.2 * freq_boost
+                
+                # Adaptive variance / noise step
+                if hasattr(cfg, "adaptive_sampler") and cfg.adaptive_sampler is not None:
+                    quality = cfg.adaptive_sampler.compute_image_quality(x0_t)
+                    if quality < cfg.adaptive_sampler.quality_threshold:
+                        # Optionally reduce noise for stronger denoising
+                        at_next = at_next * 0.98  # or adjust as needed
+                # === End custom guidance ===
+
 
                 if sigma_y==0.:
                     delta_t = 0

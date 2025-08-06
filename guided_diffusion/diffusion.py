@@ -25,7 +25,8 @@ loss_fn_alex = lpips.LPIPS(net='alex') # net='alex' best forward scores
 
 
 def get_gaussian_noisy_img(img, noise_level):
-    return img + torch.randn_like(img).cuda() * noise_level
+     noise = torch.randn_like(img).to(img.device)
+     return img + noise * noise_level
 
 def MeanUpsample(x, scale):
     n, c, h, w = x.shape
@@ -397,7 +398,8 @@ class Diffusion(object):
 
             y = A_funcs.A(x_orig)
             
-            y = y + args.sigma_y*torch.randn_like(y).cuda()  # added noise to measurement
+            noise = torch.randn_like(y).to(y.device)
+            y = y + args.sigma_y * noise  # added noise to measurement # added noise to measurement
             
             b, hwc = y.size()
             if 'color' in deg:

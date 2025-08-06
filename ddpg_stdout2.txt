@@ -1,0 +1,8 @@
+Setting up [LPIPS] perceptual loss: trunk [alex], v[0.1], spatial [off]
+Loading model from: /home/24212031110/.local/lib/python3.11/site-packages/lpips/weights/v0.1/alex.pth
+Run DDPG. Operators implementation via FFT. 100 sampling steps. Task: deblur_gauss. Noise level: 0.0.
+Dataset has size 8
+Start from 0
+Total Average PSNR: 47.82
+Total Average LPIPS: 0.0010
+Number of samples: 8

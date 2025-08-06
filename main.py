@@ -8,6 +8,15 @@ import os
 import torch
 import numpy as np
 import torch.utils.tensorboard as tb
+# --- Enhancement modules -----------------
+from datasets.preprocessing import AdaptivePreprocessor
+from guided_diffusion.enhanced_guidance import (
+        MultiLevelEdgeGuidance,
+        FrequencyGuidance,
+)
+from guided_diffusion.adaptive_sampling import AdaptiveSampler
+# -----------------------------------------
+
 
 # from runners.diffusion import Diffusion
 from guided_diffusion.diffusion import Diffusion
@@ -95,6 +104,19 @@ def parse_args_and_config():
     parser.add_argument(
         "--step_size_mode", type=int, default=1, help="0 (fixed 1) | 1 (certain decay as in paper) | 2 (fixed 1 for BP, decay for LS)" # you can add other choices
     )
+    # ----- Enhancement flags -----
+    parser.add_argument("--enable_preprocessing", action="store_true",
+                        help="turn on AdaptivePreprocessor")
+    parser.add_argument("--enable_edge_guidance", action="store_true",
+                        help="multi-level edge maps in guidance")
+    parser.add_argument("--enable_frequency_guidance", action="store_true",
+                        help="frequency-domain enhancement in guidance")
+    parser.add_argument("--enable_adaptive_sampling", action="store_true",
+                        help="dynamic step-size and variance update")
+    parser.add_argument("--quality_threshold", type=float, default=0.8,
+                        help="threshold for AdaptiveSampler quality map")
+    # ------------------------------
+
 
     
 
@@ -162,6 +184,40 @@ def parse_args_and_config():
         torch.cuda.manual_seed_all(args.seed)
 
     torch.backends.cudnn.benchmark = True
+    
+          # ORIGINAL (BUGGY) CODE - REMOVE THIS:
+    # if args.enable_preprocessing:
+    #     config.preprocessor = AdaptivePreprocessor()
+    
+    # CORRECTED CODE - USE THIS INSTEAD:
+    # Move enhancement setup AFTER dict2namespace conversion
+    new_config = dict2namespace(config)
+    
+    # === build enhancement handles (FIXED) ===
+    if args.enable_preprocessing:
+        new_config.preprocessor = AdaptivePreprocessor()
+    else:
+        new_config.preprocessor = None
+    
+    if args.enable_edge_guidance:
+        new_config.edge_guidance = MultiLevelEdgeGuidance()
+    else:
+        new_config.edge_guidance = None
+    
+    if args.enable_frequency_guidance:
+        new_config.freq_guidance = FrequencyGuidance()
+    else:
+        new_config.freq_guidance = None
+    
+    if args.enable_adaptive_sampling:
+        new_config.adaptive_sampler = AdaptiveSampler(
+            total_steps=new_config.diffusion.num_diffusion_timesteps,
+            quality_threshold=args.quality_threshold
+        )
+    else:
+        new_config.adaptive_sampler = None
+    # =================================
+
 
     return args, new_config, logger
 

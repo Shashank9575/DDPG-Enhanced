@@ -1,0 +1,18 @@
+#!/bin/bash
+#PBS -N ddpg_job
+#PBS -q gpu                    
+#PBS -l select=1:ncpus=4:ngpus=1 
+#PBS -l walltime=01:00:00
+#PBS -o ddpg_output.log
+#PBS -e ddpg_error.log
+#PBS -V
+
+cd $PBS_O_WORKDIR
+module load apps/anaconda-2024.02
+conda activate ddpg
+
+export LD_LIBRARY_PATH=/home/apps/anaconda-2024.02/lib:$LD_LIBRARY_PATH
+
+python main.py --config celeba_hq.yml --path_y celeba_hq --deg sr_bicubic --sigma_y 0 \
+-i DDPG_celeba_sr_bicubic_sigma_y_0 --inject_noise 1 --zeta 0.7 --step_size_mode 0 \
+--deg_scale 4 --operator_imp SVD --enable_edge_guidance  > ddpg_stdout5.txt 2> ddpg_stderr5.txt
